@@ -66,11 +66,11 @@ df_2021_price = df_2021_price.reset_index(drop=True)
 df_result = pd.DataFrame()
 df_result['result'] = (df_2021_price['종가'] > df_2020_price['종가']).astype(int)
 result_counts = df_result['result'].value_counts()
-plt.bar(result_counts.index, result_counts.values,color=['red', 'dodgerblue'])
-plt.ylabel('Count')
-plt.xticks([0, 1], ['손실', '수익'])
-plt.title('국민연금 종목 수익/손실 그래프')
-plt.show()
+# plt.bar(result_counts.index, result_counts.values,color=['red', 'dodgerblue'])
+# plt.ylabel('Count')
+# plt.xticks([0, 1], ['손실', '수익'])
+# plt.title('국민연금 종목 수익/손실 그래프')
+# plt.show()
 
 #코스피 데이터 크롤링
 df_kospi_price = pd.DataFrame()
@@ -89,18 +89,18 @@ df_kospi_price = df_kospi_price.sort_index(ascending=False)
 df_kospi_price = df_kospi_price.reset_index(drop=True)
 
 #코스피 그래프
-plt.figure(figsize=(10,4))
-plt.plot(df_kospi_price['날짜'], df_kospi_price['체결가'])
-plt.xlabel('날짜')
-plt.ylabel('종가')
-plt.tick_params(
-    axis='x',
-    which='both',
-    bottom=False,
-    top=False,
-    labelbottom=False)
-plt.savefig("kospi.png")
-plt.show()
+# plt.figure(figsize=(10,4))
+# plt.plot(df_kospi_price['날짜'], df_kospi_price['체결가'])
+# plt.xlabel('날짜')
+# plt.ylabel('종가')
+# plt.tick_params(
+#     axis='x',
+#     which='both',
+#     bottom=False,
+#     top=False,
+#     labelbottom=False)
+# plt.savefig("kospi.png")
+# plt.show()
 
 #시가총액 크롤링
 d = [20210104,20200102]
@@ -171,4 +171,4 @@ variable_x = mpatches.Patch(color='dodgerblue',label='KOSPI')
 variable_y = mpatches.Patch(color='orange',label=name)
 plt.legend(handles=[variable_x, variable_y],loc='lower left')
 plt.title(f'KOSPI/{name} 그래프')
-plt.show()
+st.pyplot(plt)
