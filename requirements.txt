@@ -1,0 +1,6 @@
+pandas
+matplotlib
+requests
+BytesIO
+lxml
+html5lib
