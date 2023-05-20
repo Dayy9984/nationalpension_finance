@@ -1,6 +1,5 @@
 pandas
 matplotlib
 requests
-IO
 lxml
 html5lib
