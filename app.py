@@ -44,12 +44,10 @@ header = {"User-Agent" : 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/
 session = requests.Session()
 session.headers = header
 
-# This function will be run concurrently
-def fetch_kospi(page):
-    pg_url = f'https://finance.naver.com/sise/sise_index_day.naver?code=KOSPI&page={page}'
-    res = session.get(pg_url)
-    df_page = pd.read_html(res.text, header=0,encoding='euc-kr')[0]
-    return df_page
+st.subheader('국민연금 투자종목 :blue[손실]/:red[수익] 분석:pencil:')
+p = [59,84]
+session = requests.Session()
+session.headers = header
 
 def fetch_item(page, url):
     pg_url = f'{url}&page={page}'
@@ -57,27 +55,84 @@ def fetch_item(page, url):
     df_page = pd.read_html(res.text, header=0,encoding='euc-kr')[0]
     return df_page
 
-# Use a ThreadPoolExecutor to run the fetch function concurrently
-df_kospi_price = pd.DataFrame()
-with concurrent.futures.ThreadPoolExecutor() as executor:
-    # fetch all pages concurrently
-    futures = [executor.submit(fetch_kospi, page) for page in range(99,141)]
-    # as the results come in, append them to the DataFrame
-    for future in concurrent.futures.as_completed(futures):
-        df_page = future.result()
-        df_kospi_price = pd.concat([df_kospi_price, df_page], ignore_index=True)
+with st.spinner('국민연금 투자종목 손실/수익 분석중...'):
+    def price(name):
+        url = get_url(name, df_code)
+        # 일자 데이터를 담을 df라는 DataFrame 정의
+        df_price = pd.DataFrame() 
 
-df_kospi_price = df_kospi_price.dropna()
+        # 1페이지에서 100페이지의 데이터만 가져오기
+        with concurrent.futures.ThreadPoolExecutor() as executor:
+            # fetch all pages concurrently
+            futures = [executor.submit(fetch_item, page,url) for page in p]
+            # as the results come in, append them to the DataFrame
+            for future in concurrent.futures.as_completed(futures):
+                df_page = future.result()
+                df_price = pd.concat([df_price, df_page[df_page['날짜'] == '2021.01.04']], ignore_index=True)
+                df_price = pd.concat([df_price, df_page[df_page['날짜'] == '2020.01.02']], ignore_index=True)
+        df_price.insert(0,'name',name)
+        return df_price
 
-for i in range(1,31):
-    df_kospi_price.drop(df_kospi_price[df_kospi_price['날짜'] == "2019.12.{0:0>2}".format(i)].index , inplace=True)
-for i in range(5,31):
-    df_kospi_price.drop(df_kospi_price[df_kospi_price['날짜'] == '2021.01.{0:0>2}'.format(i)].index , inplace=True)
+    df_price = pd.DataFrame()
+    with concurrent.futures.ThreadPoolExecutor() as executor:
+        # fetch all pages concurrently
+        futures = [executor.submit(price, name) for name in df_national_pension]
+        # as the results come in, append them to the DataFrame
+        for future in concurrent.futures.as_completed(futures):
+            df_page = future.result()
+            df_price = pd.concat([df_price, df_page], ignore_index=True)
 
-df_kospi_2021 = df_kospi_price[df_kospi_price['날짜'] == '2021.01.04']
-df_kospi_2020 = df_kospi_price[df_kospi_price['날짜'] == '2020.01.02']
-df_kospi_price = df_kospi_price.sort_index(ascending=False)
-df_kospi_price = df_kospi_price.reset_index(drop=True)
+    df_2021_price = df_price[df_price['날짜'] == '2021.01.04']
+    df_2020_price = df_price[df_price['날짜'] == '2020.01.02']
+    df_2021_price = df_2021_price.reset_index(drop=True)
+    df_2020_price = df_2020_price.reset_index(drop=True)
+with st.spinner('국민연금 투자종목 손실/수익 그래프 생성중...')
+    #국민연금 종목 수익/손실 그래프
+    df_result = pd.DataFrame()
+    df_result['result'] = (df_2021_price['종가'] > df_2020_price['종가']).astype(int)
+    result_counts = df_result['result'].value_counts()
+    plt.bar(result_counts.index, result_counts.values,color=['red', 'dodgerblue'])
+    plt.ylabel('Count')
+    plt.xticks([0, 1], ['손실', '수익'])
+    plt.title('국민연금 종목 수익/손실 그래프')
+    st.pyplot(plt)                            
+
+
+with st.spinner('국민연금 투자 종목 데이터 분석중...'):
+    # This function will be run concurrently
+    def fetch_kospi(page):
+        pg_url = f'https://finance.naver.com/sise/sise_index_day.naver?code=KOSPI&page={page}'
+        res = session.get(pg_url)
+        df_page = pd.read_html(res.text, header=0,encoding='euc-kr')[0]
+        return df_page
+
+    def fetch_item(page, url):
+        pg_url = f'{url}&page={page}'
+        res = session.get(pg_url)
+        df_page = pd.read_html(res.text, header=0,encoding='euc-kr')[0]
+        return df_page
+
+    # Use a ThreadPoolExecutor to run the fetch function concurrently
+    df_kospi_price = pd.DataFrame()
+    with concurrent.futures.ThreadPoolExecutor() as executor:
+        # fetch all pages concurrently
+        futures = [executor.submit(fetch_kospi, page) for page in range(99,141)]
+        # as the results come in, append them to the DataFrame
+        for future in concurrent.futures.as_completed(futures):
+            df_page = future.result()
+            df_kospi_price = pd.concat([df_kospi_price, df_page], ignore_index=True)
+
+    df_kospi_price = df_kospi_price.dropna()
+
+    for i in range(1,31):
+        df_kospi_price.drop(df_kospi_price[df_kospi_price['날짜'] == "2019.12.{0:0>2}".format(i)].index , inplace=True)
+    for i in range(5,31):
+        df_kospi_price.drop(df_kospi_price[df_kospi_price['날짜'] == '2021.01.{0:0>2}'.format(i)].index , inplace=True)
+
+    df_kospi_2021 = df_kospi_price[df_kospi_price['날짜'] == '2021.01.04']
+    df_kospi_2020 = df_kospi_price[df_kospi_price['날짜'] == '2020.01.02']
+    df_kospi_price = df_kospi_price.sort_index(ascending=False)
+    df_kospi_price = df_kospi_price.reset_index(drop=True)
 
 
 
@@ -88,7 +143,7 @@ candle = st.checkbox('캔들로 전환')
 rangestandard = st.radio(
         "종가범위 방식 지정",
         ('선형스케일링', '정규화'))
-with st.spinner('그래프 생성중...'):
+with st.spinner('국민연금 투자 종목 그래프 생성중...'):
     url = get_url(name, df_code)
     df_price_item = pd.DataFrame()
 
