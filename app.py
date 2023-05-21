@@ -76,7 +76,12 @@ df_kospi_2020 = df_kospi_price[df_kospi_price['날짜'] == '2020.01.02']
 df_kospi_price = df_kospi_price.sort_index(ascending=False)
 df_kospi_price = df_kospi_price.reset_index(drop=True)
 
+
+
+
+
 name = st.selectbox('종목선택',list(df_code['name']))
+with st.spinner('Wait for it...'):
 url = get_url(name, df_code)
 df_price_item = pd.DataFrame()
 
@@ -101,14 +106,11 @@ df_kospi_price = df_kospi_price.sort_values('날짜')
 df_price_item = df_price_item.sort_values('날짜')
 
 
-
-
-
-
-
 candle = st.checkbox('캔들로 전환')
-rangestandard = st.checkbox('종목 기준으로 범위전환')
-if rangestandard:
+rangestandard = st.radio(
+    "종가범위 방식 지정",
+    ('선형스케일링', '정규화'))
+if rangestandard == '선형스케일링':
     kospi_range = df_kospi_price['체결가'].max() - df_kospi_price['체결가'].min()
     item_range = df_price_item['종가'].max() - df_price_item['종가'].min()
     df_kospi_price['체결가_normalization'] = (((df_kospi_price['체결가']-df_kospi_price['체결가'].min())*item_range)/kospi_range) + df_price_item['종가'].min()
@@ -123,7 +125,7 @@ else:
 
 if not candle:
     plt.figure(figsize=(16,9))
-    if rangestandard:
+    if rangestandard == '선형스케일링':
         plt.plot(df_kospi_price['날짜'], df_kospi_price['체결가_normalization'], color='dodgerblue')
         plt.plot(df_price_item['날짜'], df_price_item['종가'], color='orange')
         plt.ylabel('종가',fontproperties=font_prop)
@@ -151,7 +153,7 @@ if not candle:
     st.pyplot(plt)
 else:
     fig , ax = plt.subplots(figsize=(16,9))
-    if rangestandard:
+    if rangestandard == '선형스케일링':
         plt.plot(df_kospi_price['날짜'], df_kospi_price['체결가_normalization'], color='dodgerblue',linewidth=0.7)
         plt.ylabel('종가',fontproperties=font_prop)
         candlestick2_ohlc(ax, df_price_item['시가'], df_price_item['고가'], 
@@ -174,3 +176,4 @@ else:
     plt.legend(handles=[variable_x],prop=font_prop)
     plt.title(f'KOSPI/{name} 그래프',fontproperties=font_prop,size=28)
     st.pyplot(plt)
+st.success('Done!')
