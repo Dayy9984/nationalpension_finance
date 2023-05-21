@@ -93,8 +93,8 @@ with st.spinner('국민연금 투자종목 손실/수익 그래프 생성중...'
     result_counts = df_result['result'].value_counts()
     plt.bar(result_counts.index, result_counts.values,color=['red', 'dodgerblue'])
     plt.ylabel('Count')
-    plt.xticks([0, 1], ['손실', '수익'],fontproperties=font_prop)
-    plt.title('국민연금 종목 수익/손실 그래프',fontproperties=font_prop,size=28)
+    plt.xticks([0, 1], ['손실', '수익'],fontproperties=font_prop,size=10)
+    plt.title('국민연금 종목 수익/손실 그래프',fontproperties=font_prop)
     st.pyplot(plt)                            
 st.title('')
 
