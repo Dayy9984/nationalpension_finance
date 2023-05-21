@@ -81,7 +81,7 @@ df_kospi_price = df_kospi_price.reset_index(drop=True)
 
 
 name = st.selectbox('종목선택',list(df_code['name']))
-with st.spinner('Wait for it...'):
+with st.spinner('그래프 생성중...'):
 url = get_url(name, df_code)
 df_price_item = pd.DataFrame()
 
@@ -176,4 +176,4 @@ else:
     plt.legend(handles=[variable_x],prop=font_prop)
     plt.title(f'KOSPI/{name} 그래프',fontproperties=font_prop,size=28)
     st.pyplot(plt)
-st.success('Done!')
+st.success('생성 완료!')
