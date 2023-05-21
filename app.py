@@ -24,7 +24,9 @@ df_krx['code'] = df_krx['code'].apply(lambda x : '{0:0>6}'.format(x))
 df_krx = pd.DataFrame(df_krx)
 df_code = df_krx.query(f"name in {df_national_pension}")
 df_code = pd.DataFrame(df_code)
+df_code = df_code.drop(df_code.index[df_code['name']=='SK바이오팜'],axis=0)
 df_code = df_code.reset_index(drop=True)
+
 
 
 def get_url(item_name, df_code):
