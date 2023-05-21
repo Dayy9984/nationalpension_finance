@@ -7,7 +7,7 @@ import requests
 import time
 import concurrent.futures
 import streamlit as st
-
+from mpl_finance import candlestick2_ohlc
 
 font_path = 'NanumBarunGothicLight.ttf'
 font_prop = fm.FontProperties(fname=font_path, size= 16)
@@ -98,29 +98,49 @@ df_price_item = df_price_item.reset_index(drop=True)
 df_kospi_price = df_kospi_price.sort_values('날짜')
 df_price_item = df_price_item.sort_values('날짜')
 df_kospi_price['price_normalization'] = df_kospi_price['체결가']/abs(df_kospi_price['체결가'].max())
-df_price_item['close_normalization'] = df_price_item['종가']/abs(df_price_item['종가'].max())
-
-plt.figure(figsize=(16,9))
-plt.plot(df_kospi_price['날짜'], df_kospi_price['price_normalization'], color='dodgerblue')
-plt.xlabel('날짜',fontproperties=font_prop)
-plt.ylabel('종가(정규화)',fontproperties=font_prop)
-plt. tick_params(
-    axis='x',
-    which='both',
-    bottom=False,
-    top=False,
-    labelbottom=False)
-plt.plot(df_price_item['날짜'], df_price_item['close_normalization'], color='orange')
-plt. tick_params(
-    axis='x',
-    which='both',
-    bottom=False,
-    top=False,
-    labelbottom=False)
-variable_x = mpatches.Patch(color='dodgerblue',label='KOSPI')
-variable_y = mpatches.Patch(color='orange',label=name)
-plt.legend(handles=[variable_x, variable_y],prop=font_prop)
-plt.title(f'KOSPI/{name} 그래프',fontproperties=font_prop,size=28)
-
-
-st.pyplot(plt)
+df_price_item['종가'] = df_price_item['종가']/abs(df_price_item['종가'].max())
+df_price_item['시가'] = df_price_item['시가']/abs(df_price_item['시가'].max())
+df_price_item['고가'] = df_price_item['고가']/abs(df_price_item['고가'].max())
+df_price_item['저가'] = df_price_item['저가']/abs(df_price_item['저가'].max())
+candle = st.checkbox('캔들로 전환')
+if canldle:
+    plt.figure(figsize=(16,9))
+    plt.plot(df_kospi_price['날짜'], df_kospi_price['price_normalization'], color='dodgerblue')
+    plt.xlabel('날짜',fontproperties=font_prop)
+    plt.ylabel('종가(정규화)',fontproperties=font_prop)
+    plt. tick_params(
+        axis='x',
+        which='both',
+        bottom=False,
+        top=False,
+        labelbottom=False)
+    plt.plot(df_price_item['날짜'], df_price_item['종가'], color='orange')
+    plt. tick_params(
+        axis='x',
+        which='both',
+        bottom=False,
+        top=False,
+        labelbottom=False)
+    variable_x = mpatches.Patch(color='dodgerblue',label='KOSPI')
+    variable_y = mpatches.Patch(color='orange',label=name)
+    plt.legend(handles=[variable_x, variable_y],prop=font_prop)
+    plt.title(f'KOSPI/{name} 그래프',fontproperties=font_prop,size=28)
+    st.pyplot(plt)
+else:
+    fig , ax = plt.subplots(figsize=(16,9))
+    plt.plot(df_kospi_price['날짜'], df_kospi_price['price_normalization'], color='dodgerblue',linewidth=0.4)
+    plt.xlabel('날짜',fontproperties=font_prop)
+    plt.ylabel('종가(정규화)',fontproperties=font_prop)
+    plt. tick_params(
+        axis='x',
+        which='both',
+        bottom=False,
+        top=False,
+        labelbottom=False)
+    candlestick2_ohlc(ax, df_price_item['시가'], df_price_item['고가'], 
+                  df_price_item['저가'], df_price_item['종가'],
+                  width=0.5, colorup='r', colordown='b')
+    variable_x = mpatches.Patch(color='dodgerblue',label='KOSPI')
+    plt.legend(handles=[variable_x],prop=font_prop)
+    plt.title(f'KOSPI/{name} 그래프',fontproperties=font_prop,size=28)
+    st.pyplot(plt)
