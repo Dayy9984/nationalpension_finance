@@ -146,7 +146,7 @@ elif option == '국민연금 투자종목 차트분석':
         ('선형스케일링', '정규화'))
     with col2:
         st.title('')
-        st.title('')
+        st.markdown('')
         candle = st.checkbox('캔들로 전환')
     name = st.selectbox('종목선택',list(df_code['name']))  
     with st.spinner('국민연금 투자 종목 그래프 생성중...'):
