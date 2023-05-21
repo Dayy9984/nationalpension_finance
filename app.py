@@ -47,7 +47,7 @@ session.headers = header
 option = st.selectbox(
     '국민연금 투자종목 분석 보고서 선택',
     ('국민연금 투자종목 손실/수익 분석', '국민연금 투자종목 차트분석'))
-
+df_2021_price = pd.DataFrame()
 if option == '국민연금 투자종목 손실/수익 분석':
     st.subheader('국민연금 투자종목 :blue[손실]/:red[수익] 분석:pencil:')
     p = [59,84]
