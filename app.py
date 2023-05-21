@@ -9,7 +9,7 @@ import concurrent.futures
 import streamlit as st
 from mpl_finance import candlestick2_ohlc
 
-st.title(':blue[국민연금] 2020/2021년도 투자종목 분석:page_with_curl:')
+st.title(':blue[국민연금] 2020/2021년도\ 투자종목 분석:page_with_curl:')
 font_path = 'NanumBarunGothicLight.ttf'
 font_prop = fm.FontProperties(fname=font_path, size= 16)
 
