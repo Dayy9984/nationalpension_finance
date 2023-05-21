@@ -135,7 +135,8 @@ with st.spinner('국민연금 투자 종목 데이터 분석중...'):
 
 
 
-
+profit = False
+loss = False
 st.subheader('국민연금 투자종목 :blue[차트]분석:chart_with_upwards_trend:')
 col1, col2 = st.columns(2)
 with col1:
