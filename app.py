@@ -142,13 +142,13 @@ elif option == '국민연금 투자종목 차트분석':
     col1, col2 = st.columns(2)
     with col1:
         profit = st.checkbox('수익종목만 보기')
-        loss = st.checkbox('손실종목만 보기')
     with col2:
-        name = st.selectbox('종목선택',list(df_code['name']))
-        if profit: 
-            name = st.selectbox('종목선택',list(sorted(df_2021_price[df_2021_price['result'] == 1]['name'])))
-        if loss: 
-            name = st.selectbox('종목선택',list(sorted(df_2021_price[df_2021_price['result'] == 0]['name'])))  
+        loss = st.checkbox('손실종목만 보기')
+    name = st.selectbox('종목선택',list(df_code['name']))
+    if profit: 
+        name = st.selectbox('종목선택',list(sorted(df_2021_price[df_2021_price['result'] == 1]['name'])))
+    if loss: 
+        name = st.selectbox('종목선택',list(sorted(df_2021_price[df_2021_price['result'] == 0]['name'])))  
     candle = st.checkbox('캔들로 전환')
     rangestandard = st.radio(
             "종가범위 방식 지정",
