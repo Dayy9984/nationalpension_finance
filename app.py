@@ -103,7 +103,7 @@ df_price_item['시가'] = df_price_item['시가']/abs(df_price_item['시가'].ma
 df_price_item['고가'] = df_price_item['고가']/abs(df_price_item['고가'].max())
 df_price_item['저가'] = df_price_item['저가']/abs(df_price_item['저가'].max())
 candle = st.checkbox('캔들로 전환')
-if canldle:
+if candle:
     plt.figure(figsize=(16,9))
     plt.plot(df_kospi_price['날짜'], df_kospi_price['price_normalization'], color='dodgerblue')
     plt.xlabel('날짜',fontproperties=font_prop)
