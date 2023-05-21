@@ -119,7 +119,7 @@ plt. tick_params(
     labelbottom=False)
 variable_x = mpatches.Patch(color='dodgerblue',label='KOSPI')
 variable_y = mpatches.Patch(color='orange',label=name)
-plt.legend(handles=[variable_x, variable_y],loc='lower left',prop=font_prop)
+plt.legend(handles=[variable_x, variable_y],prop=font_prop)
 plt.title(f'KOSPI/{name} 그래프',fontproperties=font_prop,size=28)
 
 
