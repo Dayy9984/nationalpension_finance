@@ -175,4 +175,4 @@ with st.spinner('그래프 생성중...'):
         plt.legend(handles=[variable_x],prop=font_prop)
         plt.title(f'KOSPI/{name} 그래프',fontproperties=font_prop,size=28)
         st.pyplot(plt)
-st.success('생성 완료!')
+
