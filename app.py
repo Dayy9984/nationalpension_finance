@@ -86,7 +86,7 @@ with st.spinner('국민연금 투자종목 손실/수익 분석중...'):
     df_2020_price = df_price[df_price['날짜'] == '2020.01.02']
     df_2021_price = df_2021_price.reset_index(drop=True)
     df_2020_price = df_2020_price.reset_index(drop=True)
-with st.spinner('국민연금 투자종목 손실/수익 그래프 생성중...')
+with st.spinner('국민연금 투자종목 손실/수익 그래프 생성중...'):
     #국민연금 종목 수익/손실 그래프
     df_result = pd.DataFrame()
     df_result['result'] = (df_2021_price['종가'] > df_2020_price['종가']).astype(int)
