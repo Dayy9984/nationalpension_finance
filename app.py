@@ -10,7 +10,7 @@ import streamlit as st
 
 
 font_path = 'NanumBarunGothicLight.ttf'
-font_prop = fm.FontProperties(fname=font_path, size= 20)
+font_prop = fm.FontProperties(fname=font_path, size= 10)
 mpl.rcParams['font.family'] = font_prop.get_name()
 
 df_2021 = pd.read_csv('2021.csv')
@@ -121,7 +121,7 @@ plt. tick_params(
 variable_x = mpatches.Patch(color='dodgerblue',label='KOSPI')
 variable_y = mpatches.Patch(color='orange',label=name)
 plt.legend(handles=[variable_x, variable_y],loc='lower left',prop=font_prop)
-plt.title(f'KOSPI/{name} 그래프',fontproperties=font_prop)
+plt.title(f'KOSPI/{name} 그래프',fontproperties=font_prop,size=16)
 
 
 st.pyplot(plt)
