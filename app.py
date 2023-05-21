@@ -10,7 +10,7 @@ import streamlit as st
 
 
 font_path = 'NanumBarunGothicLight.ttf'
-font_prop = fm.FontProperties(fname=font_path, size= 10)
+font_prop = fm.FontProperties(fname=font_path, size= 16)
 
 df_2021 = pd.read_csv('2021.csv')
 df_2020 = pd.read_csv('2020.csv')
@@ -100,7 +100,7 @@ df_price_item = df_price_item.sort_values('날짜')
 df_kospi_price['price_normalization'] = df_kospi_price['체결가']/abs(df_kospi_price['체결가'].max())
 df_price_item['close_normalization'] = df_price_item['종가']/abs(df_price_item['종가'].max())
 
-plt.figure(figsize=(12,8))
+plt.figure(figsize=(16,8))
 plt.plot(df_kospi_price['날짜'], df_kospi_price['price_normalization'], color='dodgerblue')
 plt.xlabel('날짜',fontproperties=font_prop)
 plt.ylabel('종가(정규화)',fontproperties=font_prop)
@@ -120,7 +120,7 @@ plt. tick_params(
 variable_x = mpatches.Patch(color='dodgerblue',label='KOSPI')
 variable_y = mpatches.Patch(color='orange',label=name)
 plt.legend(handles=[variable_x, variable_y],loc='lower left',prop=font_prop)
-plt.title(f'KOSPI/{name} 그래프',fontproperties=font_prop,size=16)
+plt.title(f'KOSPI/{name} 그래프',fontproperties=font_prop,size=28)
 
 
 st.pyplot(plt)
