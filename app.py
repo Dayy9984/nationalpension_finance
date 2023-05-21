@@ -88,14 +88,13 @@ with st.spinner('국민연금 투자종목 손실/수익 분석중...'):
     df_2020_price = df_2020_price.reset_index(drop=True)
 with st.spinner('국민연금 투자종목 손실/수익 그래프 생성중...'):
     #국민연금 종목 수익/손실 그래프
-    df_result = pd.DataFrame()
-    df_result['result'] = (df_2021_price['종가'] > df_2020_price['종가']).astype(int)
-    result_counts = df_result['result'].value_counts()
+    df_2021_price['result'] = (df_2021_price['종가'] > df_2020_price['종가']).astype(int)
+    result_counts = df_2021_price['result'].value_counts()
     plt.bar(result_counts.index, result_counts.values,color=['red', 'dodgerblue'])
     plt.ylabel('Count')
     plt.xticks([0, 1], ['손실', '수익'],fontproperties=font_prop,size=10)
     plt.title('국민연금 종목 수익/손실 그래프',fontproperties=font_prop)
-    st.pyplot(plt)                            
+    st.pyplot(plt)   
 st.title('')
 
 with st.spinner('국민연금 투자 종목 데이터 분석중...'):
@@ -138,7 +137,15 @@ with st.spinner('국민연금 투자 종목 데이터 분석중...'):
 
 
 st.subheader('국민연금 투자종목 :blue[차트]분석:chart_with_upwards_trend:')
-name = st.selectbox('종목선택',list(df_code['name']))
+col1, col2 = st.columns(2)
+pnl = df_2021_price[df_2021_price['result'] == 1]['종목']
+with col1:
+    name = st.selectbox('종목선택',list(df_code['name']))
+    if profit: name = st.selectbox('종목선택',list(sorted(df_2021_price[df_2021_price['result'] == 1]['종목'])))
+    if loss: name = st.selectbox('종목선택',list(sorted(df_2021_price[df_2021_price['result'] == 0]['종목'])))    
+with col2:
+    profit = st.checkbox('수익종목만 보기')
+    loss = st.checkbox('손실종목만 보기')
 candle = st.checkbox('캔들로 전환')
 rangestandard = st.radio(
         "종가범위 방식 지정",
