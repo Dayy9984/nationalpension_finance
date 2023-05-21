@@ -100,7 +100,7 @@ df_price_item = df_price_item.sort_values('날짜')
 df_kospi_price['price_normalization'] = df_kospi_price['체결가']/abs(df_kospi_price['체결가'].max())
 df_price_item['close_normalization'] = df_price_item['종가']/abs(df_price_item['종가'].max())
 
-plt.figure(figsize=(16,8))
+plt.figure(figsize=(16,9))
 plt.plot(df_kospi_price['날짜'], df_kospi_price['price_normalization'], color='dodgerblue')
 plt.xlabel('날짜',fontproperties=font_prop)
 plt.ylabel('종가(정규화)',fontproperties=font_prop)
