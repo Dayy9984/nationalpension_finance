@@ -138,11 +138,10 @@ with st.spinner('국민연금 투자 종목 데이터 분석중...'):
 
 st.subheader('국민연금 투자종목 :blue[차트]분석:chart_with_upwards_trend:')
 col1, col2 = st.columns(2)
-pnl = df_2021_price[df_2021_price[df_2021_price['result'] == 1]]['종목']
 with col1:
     name = st.selectbox('종목선택',list(df_code['name']))
-    if profit: name = st.selectbox('종목선택',list(sorted(df_2021_price[df_2021_price['result'] == 1]['종목'])))
-    if loss: name = st.selectbox('종목선택',list(sorted(df_2021_price[df_2021_price['result'] == 0]['종목'])))    
+    if profit: name = st.selectbox('종목선택',list(sorted(df_2021_price[df_2021_price['result'] == 1]['name'])))
+    if loss: name = st.selectbox('종목선택',list(sorted(df_2021_price[df_2021_price['result'] == 0]['name'])))    
 with col2:
     profit = st.checkbox('수익종목만 보기')
     loss = st.checkbox('손실종목만 보기')
