@@ -9,7 +9,7 @@ import concurrent.futures
 import streamlit as st
 from mpl_finance import candlestick2_ohlc
 
-st.title('국민연금 2020/2021년도 투자종목 분석')
+st.title(':blue[국민연금] 2020/2021년도 투자종목 분석:page_with_curl:')
 font_path = 'NanumBarunGothicLight.ttf'
 font_prop = fm.FontProperties(fname=font_path, size= 16)
 
@@ -80,7 +80,7 @@ df_kospi_price = df_kospi_price.reset_index(drop=True)
 
 
 
-
+st.subheader('국민연금 투자종목 :blue[차트]분석:chart_with_upwards_trend:')
 name = st.selectbox('종목선택',list(df_code['name']))
 candle = st.checkbox('캔들로 전환')
 rangestandard = st.radio(
