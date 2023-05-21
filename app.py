@@ -81,6 +81,10 @@ df_kospi_price = df_kospi_price.reset_index(drop=True)
 
 
 name = st.selectbox('종목선택',list(df_code['name']))
+candle = st.checkbox('캔들로 전환')
+rangestandard = st.radio(
+        "종가범위 방식 지정",
+        ('선형스케일링', '정규화'))
 with st.spinner('그래프 생성중...'):
     url = get_url(name, df_code)
     df_price_item = pd.DataFrame()
@@ -105,11 +109,6 @@ with st.spinner('그래프 생성중...'):
     df_kospi_price = df_kospi_price.sort_values('날짜')
     df_price_item = df_price_item.sort_values('날짜')
 
-
-    candle = st.checkbox('캔들로 전환')
-    rangestandard = st.radio(
-        "종가범위 방식 지정",
-        ('선형스케일링', '정규화'))
     if rangestandard == '선형스케일링':
         kospi_range = df_kospi_price['체결가'].max() - df_kospi_price['체결가'].min()
         item_range = df_price_item['종가'].max() - df_price_item['종가'].min()
