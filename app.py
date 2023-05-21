@@ -1,4 +1,5 @@
 import pandas as pd
+import matplotlib as mpl
 import matplotlib.patches as mpatches
 import matplotlib.pyplot as plt
 import matplotlib.font_manager as fm
@@ -10,7 +11,7 @@ import streamlit as st
 
 font_location = 'NanumBarunGothicLight.ttf'
 font_name = fm.FontProperties(fname=font_location).get_name()
-plt.rc('font', family=font_name)
+mpl.rcParams('font', family=font_name)
 
 df_2021 = pd.read_csv('2021.csv')
 df_2020 = pd.read_csv('2020.csv')
