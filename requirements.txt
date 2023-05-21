@@ -3,3 +3,4 @@ matplotlib
 requests
 lxml
 html5lib
+mpl_finance
