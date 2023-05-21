@@ -139,10 +139,13 @@ elif option == '국민연금 투자종목 차트분석':
 
     st.subheader('국민연금 투자종목 :blue[차트]분석:chart_with_upwards_trend:')
     name = st.selectbox('종목선택',list(df_code['name']))  
-    candle = st.checkbox('캔들로 전환')
-    rangestandard = st.radio(
-            "종가범위 방식 지정",
-            ('선형스케일링', '정규화'))
+    col1, col2 = st.columns(2)
+    with col1:
+        candle = st.checkbox('캔들로 전환')
+    with col2:
+        rangestandard = st.radio(
+                "종가범위 방식 지정",
+                ('선형스케일링', '정규화'))
     with st.spinner('국민연금 투자 종목 그래프 생성중...'):
         url = get_url(name, df_code)
         df_price_item = pd.DataFrame()
