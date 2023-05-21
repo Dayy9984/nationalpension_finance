@@ -98,6 +98,7 @@ df_price_item = df_price_item.reset_index(drop=True)
 df_kospi_price = df_kospi_price.sort_values('날짜')
 df_price_item = df_price_item.sort_values('날짜')
 df_kospi_price['price_normalization'] = df_kospi_price['체결가']/abs(df_kospi_price['체결가'].max())
+df_price_item['price_normalization'] = df_price_item['종가']/abs(df_price_item['종가'].max())
 df_price_item['종가'] = (df_price_item['종가'] - df_price_item['종가'].mean())/df_price_item['종가'].std()
 df_price_item['시가'] = (df_price_item['시가'] - df_price_item['시가'].mean())/df_price_item['시가'].std()
 df_price_item['고가'] = (df_price_item['고가'] - df_price_item['고가'].mean())/df_price_item['고가'].std()
@@ -112,14 +113,14 @@ if not candle:
     plt.figure(figsize=(16,9))
     plt.plot(df_kospi_price['날짜'], df_kospi_price['price_normalization'], color='dodgerblue')
     plt.xlabel('날짜',fontproperties=font_prop)
-    plt.ylabel('종가(정규화)',fontproperties=font_prop)
+    plt.ylabel('종가(Min-Max 정규화)',fontproperties=font_prop)
     plt. tick_params(
         axis='x',
         which='both',
         bottom=False,
         top=False,
         labelbottom=False)
-    plt.plot(df_price_item['날짜'], df_price_item['종가'], color='orange')
+    plt.plot(df_price_item['날짜'], df_price_item['price_normalization'], color='orange')
     plt. tick_params(
         axis='x',
         which='both',
@@ -135,7 +136,7 @@ else:
     fig , ax = plt.subplots(figsize=(16,9))
     plt.plot(df_kospi_price['날짜'], df_kospi_price['체결가'], color='dodgerblue',linewidth=0.7)
     plt.xlabel('날짜',fontproperties=font_prop)
-    plt.ylabel('종가(정규화)',fontproperties=font_prop)
+    plt.ylabel('종가(Standard 정규화)',fontproperties=font_prop)
     plt. tick_params(
         axis='x',
         which='both',
