@@ -9,9 +9,9 @@ import concurrent.futures
 import streamlit as st
 
 
-font_location = 'NanumBarunGothicLight.ttf'
-font_name = fm.FontProperties(fname=font_location).get_name()
-mpl.rcParams('font', family=font_name)
+font_path = 'NanumBarunGothicLight.ttf'
+font_prop = fm.FontProperties(fname=font_path, size= 20)
+mpl.rcParams['font.family'] = font_prop.get_name()
 
 df_2021 = pd.read_csv('2021.csv')
 df_2020 = pd.read_csv('2020.csv')
@@ -103,8 +103,8 @@ df_price_item['close_normalization'] = df_price_item['종가']/abs(df_price_item
 
 plt.figure(figsize=(10,4))
 plt.plot(df_kospi_price['날짜'], df_kospi_price['price_normalization'], color='dodgerblue')
-plt.xlabel('날짜')
-plt.ylabel('close price')
+plt.xlabel('날짜',fontproperties=font_prop)
+plt.ylabel('종가(정규화)',fontproperties=font_prop)
 plt. tick_params(
     axis='x',
     which='both',
@@ -120,8 +120,8 @@ plt. tick_params(
     labelbottom=False)
 variable_x = mpatches.Patch(color='dodgerblue',label='KOSPI')
 variable_y = mpatches.Patch(color='orange',label=name)
-plt.legend(handles=[variable_x, variable_y],loc='lower left')
-plt.title(f'KOSPI/{name} Graph')
+plt.legend(handles=[variable_x, variable_y],loc='lower left',prop=font_prop)
+plt.title(f'KOSPI/{name} 그래프',fontproperties=font_prop)
 
 
 st.pyplot(plt)
