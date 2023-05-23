@@ -49,7 +49,7 @@ option = st.selectbox(
     ('국민연금 투자종목 손실/수익 분석', '국민연금 투자종목 차트분석'))
 if option == '국민연금 투자종목 손실/수익 분석':
     st.subheader('국민연금 투자종목 :blue[손실]/:red[수익] 분석:pencil:')
-    p = [59,84]
+    p = [60,84]
 
     def fetch_item(page, url):
         pg_url = f'{url}&page={page}'
